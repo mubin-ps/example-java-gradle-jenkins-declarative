@@ -74,12 +74,12 @@ publish {
 
 publishing {
     repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/jvalentino/example-java-gradle-jenkins-declarative")
+            maven {
+            name = "nexus"
+            url = uri("http://localhost:9083/repository/maven-releases/")
             credentials {
-                username = project.getProperties().get("MVN_USERNAME")
-                password = project.getProperties().get("MVN_PASSWORD")
+                username = project.findProperty("MVN_USERNAME") ?: ""
+                password = project.findProperty("MVN_PASSWORD") ?: ""
             }
         }
     }
