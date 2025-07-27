@@ -14,7 +14,7 @@ pipeline {
     stage('Publish') {
       steps {
         withCredentials([usernamePassword(
-        credentialsId: 'github-publish-maven', 
+        credentialsId: 'artifactory-creds', 
         passwordVariable: 'MVN_PASSWORD', 
         usernameVariable: 'MVN_USERNAME')]) {
 
