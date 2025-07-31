@@ -1,0 +1,162 @@
+pipeline:
+  identifier: gradle17_aWjWY42x
+  name: GRADLE17
+  orgIdentifier: default
+  projectIdentifier: PUBLICISTEST
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          buildIntelligence:
+            enabled: true
+          caching:
+            enabled: true
+          cloneCodebase: true
+          execution:
+            steps:
+              - stepGroup:
+                  identifier: Build819512
+                  name: Build
+                  steps:
+                    - step:
+                        identifier: sh37e75a
+                        name: sh
+                        spec:
+                          command: ./gradlew clean build --stacktrace -i
+                          connectorRef: account.harnessImage
+                          envVariables:
+                            GIT_BRANCH: origin/main
+                            GIT_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_SUCCESSFUL_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_URL: https://github.com/mubin-ps/example-java-gradle-jenkins-declarative.git
+                          image: alpine
+                          shell: Sh
+                        timeout: ""
+                        type: Test
+                  timeout: ""
+              - stepGroup:
+                  identifier: Publish845080
+                  name: Publish
+                  steps:
+                    - step:
+                        identifier: stagenull48d7fc
+                        name: gradle
+                        spec:
+                          command: |2-
+
+                                          ./gradlew -i --stacktrace publish                   -PMVN_USERNAME=admin                   -PMVN_PASSWORD=${MVN_PASSWORD}                   -PMVN_VERSION=1.7
+                                        
+                          envVariables:
+                            GIT_BRANCH: origin/main
+                            GIT_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_SUCCESSFUL_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_URL: https://github.com/mubin-ps/example-java-gradle-jenkins-declarative.git
+                            MVN_PASSWORD: <+pipeline.variables.MVN_PASSWORD>
+                            MVN_USERNAME: <+pipeline.variables.MVN_USERNAME>
+                          image: gradle:latest
+                          shell: Sh
+                        timeout: ""
+                        type: Test
+                    - step:
+                        identifier: sh80d653
+                        name: sh
+                        spec:
+                          command: |2-
+
+                                          ./gradlew -i --stacktrace publish                   -PMVN_USERNAME=admin                   -PMVN_PASSWORD=${MVN_PASSWORD}                   -PMVN_VERSION=1.7
+                                        
+                          connectorRef: account.harnessImage
+                          envVariables:
+                            GIT_BRANCH: origin/main
+                            GIT_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_SUCCESSFUL_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_URL: https://github.com/mubin-ps/example-java-gradle-jenkins-declarative.git
+                            MVN_PASSWORD: <+pipeline.variables.MVN_PASSWORD>
+                            MVN_USERNAME: <+pipeline.variables.MVN_USERNAME>
+                          image: alpine
+                          shell: Sh
+                        timeout: ""
+                        type: Test
+                  timeout: ""
+              - stepGroup:
+                  identifier: Postc66e59
+                  name: Post
+                  steps:
+                    - step:
+                        identifier: jacocof035da
+                        name: jacoco
+                        spec:
+                          envVariables:
+                            GIT_BRANCH: origin/main
+                            GIT_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_SUCCESSFUL_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_URL: https://github.com/mubin-ps/example-java-gradle-jenkins-declarative.git
+                          image: plugins/coverage-report
+                          settings:
+                            tool: jacoco
+                        timeout: ""
+                        type: Plugin
+                    - step:
+                        identifier: junited1aa0
+                        name: junit
+                        spec:
+                          command: echo 'This Step is to Upload JUNIT Reports'
+                          envVariables:
+                            GIT_BRANCH: origin/main
+                            GIT_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_PREVIOUS_SUCCESSFUL_COMMIT: 31ae7f5fa33f75a3c0d751083556d1ca73338dac
+                            GIT_URL: https://github.com/mubin-ps/example-java-gradle-jenkins-declarative.git
+                          reports:
+                            spec:
+                              paths:
+                                - lib/build/test-results/test/*.xml
+                            type: JUnit
+                          shell: Sh
+                        timeout: ""
+                        type: Run
+                    - step:
+                        identifier: scanforissues5ad0c6
+                        name: scanForIssues_publishIssues
+                        spec:
+                          command: |-
+                            echo "This is a place holder for: scanForIssues"
+
+                            # Here is the parameterMap for this function:
+                            # {
+                            #   "pattern": "lib/build/reports/pmd/*.xml",
+                            #   "tool": {
+                            #     "$class": "Pmd"
+                            #   }
+                            # }
+                            echo "This is a place holder for: publishIssues"
+
+                            # Here is the parameterMap for this function:
+                            # {
+                            #   "issues": [
+                            #     "UNSERIALIZABLE"
+                            #   ]
+                            # }
+                          shell: Sh
+                        timeout: ""
+                        type: Run
+                  timeout: ""
+          platform:
+            arch: Amd64
+            os: Linux
+          runtime:
+            spec: {}
+            type: Cloud
+        type: CI
+  tags:
+    gradle: ""
+    junit: ""
